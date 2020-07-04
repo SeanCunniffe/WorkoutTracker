@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+    <group android:checkableBehavior="single"
+           android:id="@+id/menuTop" android:menuCategory="container">
+        <item
+            android:title="Workout">
+            <menu>
+                <item
+                        android:id="@+id/startWorkout"
+                        android:icon="@drawable/dumbell"
+                        android:title="@string/start_workout" android:onClick="onStartExercise">
+                </item>
+            </menu>
+        </item>
+    </group>
+    <group android:checkableBehavior="single"
+           android:id="@+id/menuMiddle" android:menuCategory="container">
+        <item
+                android:title="Records">
+            <menu>
+                <item
+                    android:id="@+id/workout_history"
+                    android:icon="@drawable/history"
+                    android:title="@string/workout_history">
+                </item>
+                <item
+                    android:id="@+id/progress"
+                    android:icon="@drawable/progress"
+                    android:title="@string/progress">
+                </item>
+            </menu>
+        </item>
+    </group>
+    <group android:checkableBehavior="single"
+           android:id="@+id/menuBottom" android:menuCategory="container">
+        <item android:title="Alarms">
+            <menu>
+                <item
+                    android:id="@+id/reminder"
+                    android:icon="@drawable/reminder"
+                    android:title="@string/reminders">
+                </item>
+            </menu>
+        </item>
+    </group>
+    <group android:checkableBehavior="single"
+           android:id="@+id/menuBottomBottom" android:menuCategory="container">
+                <item
+                        android:id="@+id/setting"
+                        android:icon="@drawable/settings"
+                        android:title="@string/setting">
+                </item>
+
+    </group>
+</menu>

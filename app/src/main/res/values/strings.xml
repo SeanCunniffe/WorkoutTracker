@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">WorkoutTracker</string>
+    <string name="edit_set">Edit sets</string>
+    <string name="weightLabel">Weight</string>
+    <string name="addWeight">+5Kg</string>
+    <string name="removeWeight">-5Kg</string>
+    <string name="kg">Kg</string>
+    <string name="flat_bench_press">Flat Bench Press</string>
+    <string name = "lastExercise">View this exercise history</string>
+    <string name = "open">open</string>
+    <string name = "close">close</string>
+    <string name="workout_history">Workout History</string>
+    <string name="progress">Gainz Progress</string>
+    <string name ="start_workout">Start Workout</string>
+    <string name ="reminders">Reminders</string>
+    <string name = "setting">Settings</string>
+    <string name = "create_user">Create user</string>
+</resources>

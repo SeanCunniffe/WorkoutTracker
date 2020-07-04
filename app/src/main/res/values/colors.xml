@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#242038</color>
+    <color name="colorPrimaryDark">#191627</color>
+    <color name="colorAccent">#E74C3C</color>
+    <color name="colorTextField">#c0392b</color>
+    <color name="popColor">#3039B6</color>
+    <color name="secondaryPopColor">#5862F0</color>
+    <color name="textColor">#DDDDDD</color>
+    <color name="listColor">#6870D9</color>
+</resources>
