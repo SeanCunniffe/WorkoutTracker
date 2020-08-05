@@ -8,12 +8,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.workoutTracker.Connection;
 import com.workoutTracker.HomeActivity.HomeActivity;
+import com.workoutTracker.ObservableValue;
 import com.workoutTracker.R;
+
+import java.util.Observable;
+import java.util.Observer;
 
 
 public class SignInActivity extends AppCompatActivity{
@@ -22,6 +27,8 @@ public class SignInActivity extends AppCompatActivity{
     EditText password;
     Button login;
     Button register;
+    ConstraintLayout signin;
+    ConstraintLayout splash;
     Model model;
     @Override
     public void onCreate( Bundle savedInstanceState) {
@@ -30,12 +37,26 @@ public class SignInActivity extends AppCompatActivity{
         setContentView(R.layout.signin_activity);
         mAuth = Connection.getAuth();
         initVar();
-        if (mAuth.getCurrentUser() != null) {
-            navHome(mAuth.getCurrentUser().getEmail());
-        }
+        /*
+         checks if user is already logged in, if so the slash screen stays up for two seconds and they nav to
+        home activity
+        */
+        ObservableValue<Boolean> login =  model.userLogin();
+        login.addObserver((observable, o) -> {
+            if(login.getValue()){
+                model.userProfile(); // loads user profile
+                navHome(mAuth.getCurrentUser().getEmail());
+            }else{
+                splash.setVisibility(View.INVISIBLE);
+                signin.setVisibility(View.VISIBLE);
+            }
+        });
+
     }
 
     private void initVar() {
+        signin = findViewById(R.id.signinLayout);
+        splash = findViewById(R.id.splashLayout);
         email = findViewById(R.id.emailField);
         password =findViewById(R.id.passwordField);
         login = findViewById(R.id.loginButton);
@@ -53,6 +74,7 @@ public class SignInActivity extends AppCompatActivity{
     private void navHome(String email) {
         Intent intent = new Intent(SignInActivity.this,HomeActivity.class);
         intent.putExtra("Email",email);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

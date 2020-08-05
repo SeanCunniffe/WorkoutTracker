@@ -1,5 +1,8 @@
 package com.workoutTracker;
 
+import android.content.Context;
+import com.google.firebase.FirebaseApp;
+import com.workoutTracker.SelectExerciseActivity.Model;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,6 +16,8 @@ import static org.junit.Assert.assertEquals;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class UnitTest {
+    private Context Context;
+
     @Test
     public void useAppContext() {
         try {

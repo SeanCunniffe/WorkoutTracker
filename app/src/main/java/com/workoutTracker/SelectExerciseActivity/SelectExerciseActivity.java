@@ -3,24 +3,34 @@ package com.workoutTracker.SelectExerciseActivity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentManager;
+import com.google.android.material.textfield.TextInputEditText;
 import com.workoutTracker.R;
 import com.workoutTracker.WorkoutActivity.WorkoutActivity;
+import  com.workoutTracker.ObservableList;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
+
 public class SelectExerciseActivity extends AppCompatActivity {
+    /**
+     * TODO add textview to exercise name that will display whether the user has done the exercise today, sort to top of list
+     */
     Model model;
-    ArrayList<String> exercises = new ArrayList<>();
+    ListView list;
+    AddExerciseDialog addExerciseDialog;
+    public static ObservableList<String> exerciseToolList; // is static because we cant pass the observables through parcel in intent
+
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +40,19 @@ public class SelectExerciseActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ListView list = findViewById(R.id.exerciseList);
-        list.setAdapter(new ListAdapter(this,exercises));
+        list = findViewById(R.id.exerciseList);
+
+        ObservableList<String> exercises = model.getExercises();
+
+        ListAdapter listAdapter = new ListAdapter(this,exercises);
+        model.setExerciseListener(listAdapter);
+        list.setAdapter(listAdapter);
+        exercises.getObservable().addObserver((observable, o) -> {
+            listAdapter.notifyDataSetChanged();
+        });
+        listAdapter.notifyDataSetChanged();
+
+
     }
 
 
@@ -50,15 +71,28 @@ public class SelectExerciseActivity extends AppCompatActivity {
         Intent intent = new Intent(SelectExerciseActivity.this, WorkoutActivity.class);
         TextView exerciseName = view.findViewById(R.id.exerciseName);
         intent.putExtra("exerciseName",exerciseName.getText().toString());
+        exerciseToolList = model.getTools(exerciseName.getText().toString());
         this.startActivity(intent);
 
     }
 
 
     public void onAddExercise(MenuItem item){
-        AddExerciseDialog m = new AddExerciseDialog(this,model);
+        addExerciseDialog = new AddExerciseDialog(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        m.show(fragmentManager,"");
+        addExerciseDialog.show(fragmentManager,"");
     }
 
+    public void onConfirmExercise(View view){ // user clicks add in add_exercise_popup
+        TextInputEditText name =  view.findViewById(R.id.exerciseName);
+        String mName = name.getText().toString();
+        ListView list = view.findViewById(R.id.toolList);
+        ToolListAdapter tla = (ToolListAdapter) list.getAdapter();
+        model.addNewExercise(mName,tla.getSelectedItems());
+        addExerciseDialog.dismiss();
+    }
+
+    public void onCancelNewExercise(View view){
+        addExerciseDialog.dismiss();
+    }
 }

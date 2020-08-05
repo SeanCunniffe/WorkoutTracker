@@ -3,19 +3,19 @@ package com.workoutTracker;
 import java.io.Serializable;
 
 public class Set implements Serializable {
-    private int ID;
+    private String ID;
     private int weight;
     private int reps;
     private String exercise;
 
-    public Set(int ID,int weight,int reps,String exercise){
+    public Set(String ID,int weight,int reps,String exercise){
         this.ID = ID;
         this.weight=weight;
         this.reps=reps;
         this.exercise=exercise;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
@@ -41,5 +41,15 @@ public class Set implements Serializable {
 
     public void setExercise(String exercise) {
         this.exercise = exercise;
+    }
+
+    @Override
+    public String toString() {
+        return "Set{" +
+                "ID='" + ID + '\'' +
+                ", weight=" + weight +
+                ", reps=" + reps +
+                ", exercise='" + exercise + '\'' +
+                '}';
     }
 }

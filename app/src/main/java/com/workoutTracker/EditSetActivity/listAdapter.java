@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import com.workoutTracker.ObservableList;
 import com.workoutTracker.R;
 import com.workoutTracker.Set;
 
@@ -19,39 +20,38 @@ import java.util.ArrayList;
 public class listAdapter extends BaseAdapter {
 
     Context context;
-    ArrayList<Set> data;
+    ObservableList<Set> data;
     private static LayoutInflater inflater = null;
+    Model model;
 
-    public listAdapter(Context context, ArrayList<Set> data) {
-        // TODO Auto-generated constructor stub
+    public listAdapter(Context context, ObservableList<Set> data) {
         this.context = context;
         this.data = data;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        model = new Model(context);
+        //when new set added it will update the adapter
+        data.getObservable().addObserver((observable, o) -> notifyDataSetChanged());
     }
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return data.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.table_row, null);
@@ -65,7 +65,9 @@ public class listAdapter extends BaseAdapter {
         Button deleteButton = vi.findViewById(R.id.cancelButton);
         View finalVi = vi;
         deleteButton.setOnClickListener(view -> {
-            data.remove(data.get(position));
+            Set removeSet = data.get(position);
+            data.remove(removeSet);
+            model.removeSet(removeSet);
             Animation fadeout = new AlphaAnimation(1.f, 0.f);
             fadeout.setDuration(500);
             finalVi.startAnimation(fadeout);
