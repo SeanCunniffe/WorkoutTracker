@@ -21,7 +21,7 @@ public class UnitTest {
     @Test
     public void useAppContext() {
         try {
-            StrengthRanks ranks = new StrengthRanks("Bench Press",new File("src/StrengthRanks/benchPress.CSV"));
+            StrengthRanks ranks = new StrengthRanks("Bench Press","male",new File("src/StrengthRanks/benchPress.CSV"));
             String rank = ranks.getStrengthLevel(90,110);
             System.out.println(rank);
         } catch (StrengthRanks.FileIncompatibleException | IOException e) {

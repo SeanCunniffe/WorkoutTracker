@@ -1,6 +1,5 @@
 package com.workoutTracker.HomeActivity;
 
-import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.firebase.database.*;
 import com.workoutTracker.*;
@@ -90,10 +89,16 @@ public class Model extends Connection{
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String file = (String)snapshot.getValue();
-                StrengthRanks rank = new StrengthRanks(exerciseName,sex,file);
-                ranks.setValue(rank);
-                if(!StrengthRanks.savedStrengthRanks.contains(rank)) StrengthRanks.savedStrengthRanks.add(rank);
+                try {
+                    HashMap map = (HashMap) snapshot.getValue();
+                    String file = (String) map.get(sex);
+                    StrengthRanks rank = new StrengthRanks(exerciseName, sex, file);
+                    ranks.setValue(rank);
+                    if (!StrengthRanks.savedStrengthRanks.contains(rank)) StrengthRanks.savedStrengthRanks.add(rank);
+                }catch(NullPointerException e){
+                    //NO STRENGTHRANK
+                    ranks.notifyObservers(); // observers check if value is null
+                }
             }
 
             @Override

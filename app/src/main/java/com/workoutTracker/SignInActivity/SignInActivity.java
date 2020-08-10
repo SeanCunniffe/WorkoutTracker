@@ -90,7 +90,7 @@ public class SignInActivity extends AppCompatActivity{
     private void createUser() {
         String emailS = email.getText().toString();
         Task t = mAuth.createUserWithEmailAndPassword(emailS,password.getText().toString());
-        model.createUser(emailS);
+        //model.createUser(emailS);
         t.addOnCompleteListener((Task)->{
             Toast.makeText(this,"Account Created",Toast.LENGTH_LONG);
             navHome(emailS);

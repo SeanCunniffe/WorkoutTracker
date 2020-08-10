@@ -31,14 +31,13 @@ public class WorkoutActivity extends AppCompatActivity {
     double timeDec = -1;
     double distanceInc = 0.5;
     double distanceDec = -0.5;
-    int setCount = 0;
     public static ObservableList<Set> sets;
     RepCounterFragment repCounter;
     TimeAndDistanceFragment timeAndDistanceFragment;
     String exercise;
     ObservableList<String> tools;
     TabAdapter adapter;
-    private final CharSequence repCounterName = "rep_counter";
+    private final CharSequence repCounterName = "Rep Counter";
     private final CharSequence distanceName = "Distance";
 
     @Override

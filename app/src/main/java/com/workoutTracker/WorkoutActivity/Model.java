@@ -2,7 +2,6 @@ package com.workoutTracker.WorkoutActivity;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.firebase.database.ChildEventListener;
@@ -21,6 +20,7 @@ import java.util.Map;
 public class Model extends Connection {
     Context context;
     ObservableList<Set> sets;
+
 
 
     public Model(Context context) {

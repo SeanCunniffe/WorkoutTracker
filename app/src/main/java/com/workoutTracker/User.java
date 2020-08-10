@@ -3,17 +3,27 @@ package com.workoutTracker;
 public class User {
     private String name;
     private String DOB;
-    private long height;
-    private long weight;
+    private Double height;
+    private Long weight;
     private String sex;
+    private String username;
 
-    public User(String name, String DOB,long height,long weight,String sex){
+    public User(String name, String DOB,Double height,Long weight,String sex,String username){
         this.name = name;
         this.DOB = DOB;
         this.height = height;
         this.weight = weight;
         this.sex =sex;
+        this.username = username;
 
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -32,19 +42,19 @@ public class User {
         this.DOB = DOB;
     }
 
-    public long getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(long height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public long getWeight() {
+    public Long getWeight() {
         return weight;
     }
 
-    public void setWeight(long weight) {
+    public void setWeight(Long weight) {
         this.weight = weight;
     }
 

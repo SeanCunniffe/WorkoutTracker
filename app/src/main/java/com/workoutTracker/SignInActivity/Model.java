@@ -7,12 +7,12 @@ import com.workoutTracker.User;
 
 public class Model extends Connection{
 
-    void createUser(String email){
-        DatabaseReference ref =  getUserRef();
-        String[] name = email.split("@");
-        ref.setValue(new User(name[0],null));
-        ref.push();
-    }
+//    void createUser(String email){
+//        DatabaseReference ref =  getUserRef();
+//        String[] name = email.split("@");
+//        ref.setValue(new User(name[0],null));
+//        ref.push();
+//    }
 
     public ObservableValue<Boolean> userLogin(){
         ObservableValue<Boolean> ob = new ObservableValue<>();

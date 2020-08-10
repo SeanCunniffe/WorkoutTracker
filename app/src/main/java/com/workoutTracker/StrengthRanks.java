@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class StrengthRanks {
 
-    public static final int BEGINNER = 0;
-    public static final int NOVICE = 1;
-    public static final int INTERMEDIATE = 2;
-    public static final int ADVANCED = 3;
-    public static final int ELITE = 4;
+    public static final String BEGINNER = "Beginner";
+    public static final String NOVICE = "Novice";
+    public static final String INTERMEDIATE = "Intermediate";
+    public static final String ADVANCED = "Advanced";
+    public static final String ELITE = "Elite";
 
     private String exercise;
     private String sex;
@@ -51,23 +51,23 @@ public class StrengthRanks {
      * @param lift
      * @return
      */
-    public int getStrengthLevel(int weight,int lift){
+    public String getStrengthLevel(int weight,int lift){
         for(StrengthLevel level:levels){
             if(weight<=level.getBodyWeight()){
-                if(lift<=level.getBeginnerW()){
+                if(lift<level.getNoviceW()){
                     return BEGINNER;
-                }else if(lift<=level.getNoviceW()){
+                }else if(lift<level.getIntermediateW()){
                     return NOVICE;
-                }else if(lift<=level.getIntermediateW()){
+                }else if(lift<level.getAdvancedW()){
                     return INTERMEDIATE;
-                }else if(lift<=level.getAdvancedW()){
+                }else if(lift<level.getEliteW()){
                     return ADVANCED;
-                }else if(lift<=level.getEliteW()){
+                }else if(lift>=level.getEliteW()){
                     return ELITE;
                 }
             }
         }
-        return -1;
+        return null;
     }
 
     public String getExercise() {
@@ -161,6 +161,18 @@ public class StrengthRanks {
 
         public void setEliteW(int eliteW) {
             this.eliteW = eliteW;
+        }
+
+        @Override
+        public String toString() {
+            return "StrengthLevel{" +
+                    "bodyWeight=" + bodyWeight +
+                    ", beginnerW=" + beginnerW +
+                    ", noviceW=" + noviceW +
+                    ", intermediateW=" + intermediateW +
+                    ", advancedW=" + advancedW +
+                    ", eliteW=" + eliteW +
+                    '}';
         }
     }
 }

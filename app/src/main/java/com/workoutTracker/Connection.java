@@ -5,6 +5,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,21 +45,22 @@ public abstract class Connection {
     }
 
     public ObservableValue<User> userProfile(){ //TODO not finished
-        Runnable run = ()-> {
-            if (user == null) {
-                user = new ObservableValue<>();
+        if(user == null) {
+            user = new ObservableValue<>();
+            Runnable run = () -> {
                 DatabaseReference ref = getUserRef();
                 ref = ref.child(username.getValue());
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        HashMap profile = new HashMap();
-                        String DOB = (String) profile.get("DOB");
-                        long height = (long) profile.get("height");
+                        HashMap profile = (HashMap) snapshot.getValue();
+                        String DOB = (String) profile.get("dob");
+                        Double height = (Double) profile.get("height"); //TODO convert errors
                         String name = (String) profile.get("name");
                         String sex = (String) profile.get("sex");
-                        long weight = (long) profile.get("weight");
-                        User user1 = new User(name, DOB, height, weight, sex);
+                        Long weight = (Long) profile.get("weight"); //TODO convert errors
+                        String username = Connection.username.getValue();
+                        User user1 = new User(name, DOB, height, weight, sex, username);
                         user.setValue(user1);
                     }
 
@@ -65,10 +69,41 @@ public abstract class Connection {
 
                     }
                 });
-            }
-        };
-        execRunnable(run);
+
+            };
+            username = getUsername();
+            username.addObserver((observable, o) -> execRunnable(run)); // when username comes in
+        }
         return user;
+    }
+
+    protected ObservableValue<String> getUsername(){
+        if (username == null) {
+            username = new ObservableValue<>();
+            DatabaseReference ref = getUserRef();
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snapshotUser : snapshot.getChildren()) {
+                        String username1 = snapshotUser.getKey();
+                        HashMap map = (HashMap) snapshotUser.getValue();
+                        String email = (String) map.get("email");
+                        String email2 = Objects.requireNonNull(getAuth().getCurrentUser()).getEmail();
+                        if (email.equals(email2)) {
+                            username.setValue(username1);
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+        return username;
     }
 
     public static FirebaseAuth getAuth(){
